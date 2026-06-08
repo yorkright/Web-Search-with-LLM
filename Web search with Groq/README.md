@@ -31,7 +31,7 @@ This project demonstrates how to use the Google Gemini 2.5 Flash Lite model with
 Create a `.env` file in the root directory and add your Google API key:
 
 ```env
-GOOGLE_API_KEY=your_actual_api_key_here
+GROQ_API_KEY=your_actual_api_key_here
 ```
 
 ## 🖥️ Usage
