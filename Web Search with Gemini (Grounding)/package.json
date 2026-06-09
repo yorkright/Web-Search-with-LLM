@@ -1,5 +1,5 @@
 {
-  "name": "web-search-with-gemini-(grounding)",
+  "name": "web-search-with-gemini",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@google/genai": "^2.8.0",
     "@google/generative-ai": "^0.21.0",
     "dotenv": "^17.4.2"
   }

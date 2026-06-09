@@ -1,47 +1,37 @@
-//Gemini 2.5 Flash Lite with Web Search Grounding Example
-  
+import Groq from "groq-sdk";
+import dotenv from "dotenv";
+dotenv.config();
 
-import { GoogleGenAI } from "@google/genai";
-import 'dotenv/config'; // Load environment variables from .env
-import chalk from 'chalk';
+const groq = new Groq({apikey: process.env.GROQ_API_KEY});
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+const prompt = "Tell me current stock price of Google?";
 
-const groundingTool = {
-    googleSearch: {},
-};
+console.log(`\n\x1b[34m\x1b[1m[Querying Groq]:\x1b[0m ${prompt}`);
+console.log("\x1b[90mSearching the web and processing reasoning...\x1b[0m");
 
-const config = {
-    tools: [groundingTool],
-};
+const response = await groq.chat.completions.create({
+  model: "groq/compound",
+  messages: [
+    {
+      role: "user",
+      content: prompt
+    },
+  ]
+});
 
-try {
-    console.log(chalk.blue.bold('\n🔍 Querying Gemini with Web Search...'));
-    
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-lite",
-        // contents: "What's the stock price of Apple Inc.?",
-            contents: "Tell me stock price of Apple Inc. and provide sources.",
-        config,
-    });
+const message = response.choices[0].message;
 
-    console.log(chalk.green.bold('\n--- Response ---'));
-    console.log(chalk.white(response.text));
+// 1. Reasoning Section (Yellow)
+if (message.reasoning) {
+  console.log("\n\x1b[33m\x1b[1m[Reasoning]:\x1b[0m");
+  console.log(message.reasoning);
+}
 
-    // Check if there are search grounding sources and display them
-    const groundingMetadata = response.candidates?.[0]?.groundingMetadata;
-    if (groundingMetadata?.searchEntryPoint) {
-        console.log(chalk.cyan.bold('\n--- Sources & Grounding ---'));
-        
-        const chunks = groundingMetadata.groundingChunks || [];
-        chunks.forEach((chunk, index) => {
-            if (chunk.web) {
-                console.log(chalk.dim(`[${index + 1}] ${chunk.web.title}`));
-                console.log(chalk.blue.underline(`    ${chunk.web.uri}`));
-            }
-        });
-    }
-    console.log('\n');
-} catch (error) {
-    console.error(chalk.red.bold('\n❌ Error:'), error.message);
+// 2. Final Output Section (Green)
+console.log("\n\x1b[32m\x1b[1m[Groq Response]:\x1b[0m");
+console.log(message.content + "\n");
+
+// 3. Tool/Search metadata (Cyan) - if you want to see if tools were used
+if (message.executed_tools?.[0]?.search_results) {
+  console.log(`\x1b[36m(Used ${message.executed_tools[0].search_results.length} search sources)\x1b[0m\n`);
 }

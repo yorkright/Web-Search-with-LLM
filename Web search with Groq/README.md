@@ -1,53 +1,38 @@
-# Web Search with AI (Gemini 2.5 Flash Lite)
+# Web Search with Groq
 
-This project demonstrates how to use the Google Gemini 2.5 Flash Lite model with **Web Search Grounding** to provide accurate, real-time information directly from the web, complete with source citations.
+A simple Node.js utility that leverages the Groq API to perform web searches and provide AI-generated responses with visible reasoning steps.
 
-## 🚀 Features
+## Features
 
-- **Real-time Knowledge:** Uses Google Search grounding to answer queries about current events (e.g., stock prices).
-- **Verifiable Sources:** Automatically extracts and displays the web URIs used to ground the model's response.
-- **Lightweight & Fast:** Utilizes the `gemini-2.5-flash-lite` model for high-speed performance.
-- **User-Friendly UI:** Provides a clean, color-coded terminal interface using `chalk`.
+- **Real-time Web Search**: Uses the `groq/compound` model to fetch current information.
+- **Reasoning Visibility**: Displays the AI's internal reasoning process in the terminal.
+- **Clean Terminal UI**: Uses ANSI escape codes for color-coded output:
+  - 🔵 **Blue**: The user query.
+  - 🟡 **Yellow**: The AI's reasoning steps.
+  - 🟢 **Green**: The final response.
+  - ⚪ **Gray/Cyan**: Metadata and search status.
 
-## 🛠️ Prerequisites
+## Prerequisites
 
-- Node.js (v18 or higher recommended)
-- A Google Gemini API Key. You can get one from the Google AI Studio.
+- Node.js (v18 or higher recommended for top-level await)
+- A Groq API Key.
 
-## 📦 Installation
+## Installation
 
-1. Clone the repository or navigate to the project directory:
+1. Clone or navigate to the project directory.
+2. Install the required dependencies:
    ```bash
-   cd "Web search with Groq"
+   npm install groq-sdk dotenv
+   ```
+3. Create a `.env` file in the root directory and add your API key:
+   ```env
+   GROQ_API_KEY=your_api_key_here
    ```
 
-2. Install the dependencies:
-   ```bash
-   npm install @google/genai dotenv chalk
-   ```
+## Usage
 
-## ⚙️ Configuration
-
-Create a `.env` file in the root directory and add your Google API key:
-
-```env
-GROQ_API_KEY=your_actual_api_key_here
-```
-
-## 🖥️ Usage
-
-Run the application using Node.js:
+Run the script using Node.js:
 
 ```bash
 node Websearch.js
 ```
-
-### Example Input
-The default query is configured to ask:
-> *"Tell me stock price of Apple Inc. and provide sources."*
-
-### Output
-The script will print the AI-generated response in green, followed by a list of **Sources & Grounding** links used to verify the information.
-
-## 📝 License
-Apache-2.0
